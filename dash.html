@@ -3,76 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker - Dashboard</title>
-    <link rel="stylesheet" href="dash.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script defer src="dash.js"></script>
+    <title>Budget Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .profile-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .budget-info {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <main class="expense-tracker">
-        <nav class="main-navigation">
-            <div class="logo">
-                <i class="fas fa-wallet"></i>
-                <span>Expense Tracker</span>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Welcome, <span id="username">User</span></h1>
+        </div>
+        <div class="budget-info">
+            <h2>Budget Overview</h2>
+            <div class="budget-item">
+                <span>Total Budget:</span>
+                <span id="totalBudget">$0.00</span>
             </div>
-            <div class="budget-summary">
-                <div class="budget-item">
-                    <span>Budget: </span>
-                    <span id="budgetValue">$0.00</span>
-                </div>
-                <div class="budget-item">
-                    <span>Expenses: </span>
-                    <span id="expenseValue">$0.00</span>
-                </div>
+            <div class="budget-item">
+                <span>Total Expenses:</span>
+                <span id="totalExpenses">$0.00</span>
             </div>
-        </nav>
+            <div class="budget-item">
+                <span>Remaining Budget:</span>
+                <span id="remainingBudget">$0.00</span>
+            </div>
+        </div>
+    </div>
 
-        <section class="dashboard-overview">
-            <div class="text">
-                <span class="greeting">Good Afternoon,</span>
-                <h1 id="welcomeMessage">Hemanth Kumar</h1>
-                <p id="currentDate" class="date-info">Tracking your spending habit</p>
+    // Replace the existing script section with this:
+<script>
+    // Get values from localStorage
+    const username = localStorage.getItem('username') || 'User';
+    const totalBudget = localStorage.getItem('totalBudget') || '0.00';
+    const totalExpenses = localStorage.getItem('totalExpenses') || '0.00';
+    const remainingBudget = localStorage.getItem('remainingBudget') || '0.00';
 
-                <div class="financial-cards">
-                    <div class="financial-card remaining-money">
-                        <div class="card-icon">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>Remaining Money</h3>
-                            <p id="remainingMoney">$0.00</p>
-                        </div>
-                    </div>
-                    <div class="financial-card money-spent">
-                        <div class="card-icon">
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>Spent Today</h3>
-                            <p id="moneySpentToday">$0.00</p>
-                        </div>
-                    </div>
-                  
-                    <div class="performance-section">
-                        <div class="performance-indicator">
-                            <strong>Performance</strong>
-                            <div class="performance-bar">
-                                <div class="performance-segment good"></div>
-                                <div class="performance-segment average"></div>
-                                <div class="performance-segment bad"></div>
-                            </div>
-                            <p id="performanceText">Your financial management is looking good!</p>
-                        </div>
-                    </div>
-                   
-                </div>
-               
-                <a href="budget.html" class="proceed-btn">
-                    Proceed
-                    <span><i class="fas fa-arrow-right"></i></span>
-                </a>
-            </div>
-        </section>
-    </main>
+    // Update the DOM elements
+    document.getElementById('username').textContent = username;
+    document.getElementById('totalBudget').textContent = `$${totalBudget}`;
+    document.getElementById('totalExpenses').textContent = `$${totalExpenses}`;
+    document.getElementById('remainingBudget').textContent = `$${remainingBudget}`;
+</script>
+
 </body>
-</html>s
+</html>

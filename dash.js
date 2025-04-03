@@ -9,7 +9,6 @@ function updateDate() {
     dateElement.textContent = formattedDate;
 }
 
-// Function to update greeting based on time of day
 function updateGreeting() {
     const greetingElement = document.querySelector('.greeting');
     const hour = new Date().getHours();
@@ -43,7 +42,7 @@ function proceedToTrackerPage(e) {
     localStorage.setItem('financialData', JSON.stringify(financialData));
     
     // Navigate to the second page
-    window.location.href = 'budget-tracker.html';
+    window.location.href = 'budget.html';
 }
 
 // Load real financial data from localStorage (instead of demo data)
@@ -78,6 +77,25 @@ function loadRealFinancialData() {
         }
     } catch (error) {
         console.error('Error loading budget data:', error);
+        const storedData = localStorage.getItem('budgetItems');
+        if (storedData) {
+            const items = JSON.parse(storedData);
+            let totalExpenses = 0;
+            items.forEach(item => {
+            totalExpenses += parseFloat(item.amount);
+            });
+            document.getElementById('moneySpentToday').textContent = '$' + totalExpenses.toFixed(2);
+            
+            const budget = localStorage.getItem('dailyBudget');
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('welcomeMessage').textContent = username;
+            }
+            if (budget) {
+            const remaining = parseFloat(budget) - totalExpenses;
+            document.getElementById('remainingMoney').textContent = '$' + remaining.toFixed(2);
+            }
+        }
         // Fallback to zeros if there's an error
         document.getElementById('remainingMoney').textContent = '$0.00';
         document.getElementById('moneySpentToday').textContent = '$0.00';
