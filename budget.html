@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            padding: 20px;
+            width: 40%;
+            text-align: center;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        .main-layout {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 90%;
+            gap: 20px;
+        }
+        input, select, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 6px;
+            background-color: #222;
+            color: #fff;
+            transition: background 0.3s;
+        }
+        button {
+            background-color: #007bff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .budget-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    width: 100%;
+    max-width: 320px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.budget-info div {
+    margin: 8px 0;
+    font-weight: 500;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    max-width: 280px;
+}
+
+.budget-info span {
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.profile-link {
+    display: block;
+    margin-top: 12px;
+    font-size: 1em;
+    text-decoration: none;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.profile-link:hover {
+    opacity: 1;
+}
+
+
+
+        .graph-container {
+            text-align: center;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+        canvas { max-width: 100%; height: auto; }
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: #333;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+        .delete-btn {
+            background: #ff4d4d;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            .delete-btn {
+                font-size: 10px;
+                padding: 4px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Budget Tracker</h1>
+    <div class="main-layout">
+        <div class="container">
+            <h2>Monthly Income (INR)</h2>
+            <input type="number" id="monthlyIncome" placeholder="Enter Monthly Income" min="0">
+            <button onclick="saveIncome()">Save Income</button>
+        </div>
+        <div class="container">
+            <h2>Budget Overview</h2>
+            <div class="budget-info">
+                <div><strong>Total Income:</strong> ₹<span id="totalIncomeDisplay">0</span></div>
+                <div><strong>Total Expenses:</strong> ₹<span id="totalExpensesDisplay">0</span></div>
+                <div><strong>Budget Left:</strong> ₹<span id="budgetLeftDisplay">0</span></div>
+            </div>
+            <a href="dash.html" style="color: #007bff; text-decoration: none;">View Profile</a>
+        </div>
+    </div>
+    <div class="main-layout">
+        <div class="container">
+            <h2>Add Expense</h2>
+            <input type="text" id="expenseName" placeholder="Expense Name" required>
+            <input type="number" id="expenseAmount" placeholder="Amount (INR)" min="0" required>
+            <select id="expenseCategory">
+                <option value="">Select Category</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Other">Other</option>
+            </select>
+            <button onclick="addExpense()">Add Expense</button>
+        </div>
+        <div class="container">
+            <h2>Recent Expenses</h2>
+            <div id="expenseList"></div>
+        </div>
+    </div>
+    <div class="graph-container">
+        <canvas id="circleGraph"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        let monthlyIncome = parseFloat(localStorage.getItem('monthlyIncome')) || 0;
+        let myPieChart;
+
+        function saveIncome() {
+            let incomeInput = document.getElementById('monthlyIncome');
+            monthlyIncome = parseFloat(incomeInput.value) || 0;
+            if (monthlyIncome < 0) {
+                alert("Income cannot be negative.");
+                incomeInput.value = '';
+                return;
+            }
+            localStorage.setItem('monthlyIncome', monthlyIncome);
+            document.getElementById('totalIncomeDisplay').textContent = monthlyIncome.toFixed(2);
+            updateBudgetLeft();
+            renderChart();
+        }
+
+        function addExpense() {
+            let name = document.getElementById('expenseName').value;
+            let amount = parseFloat(document.getElementById('expenseAmount').value);
+            let category = document.getElementById('expenseCategory').value;
+            if (!name || !amount || !category) return;
+            if (amount < 0) {
+                alert("Expense amount cannot be negative.");
+                return;
+            }
+            expenses.push({ name, amount, category });
+            localStorage.setItem('expenses', JSON.stringify(expenses));
+            renderExpenses();
+            updateBudgetLeft();
+            renderChart();
+        }
+
+        function renderExpenses() {
+            let expenseList = document.getElementById('expenseList');
+            expenseList.innerHTML = '';
+            expenses.forEach((exp, index) => {
+                let div = document.createElement('div');
+                div.classList.add('expense-item');
+                div.innerHTML = `
+                    <span>${exp.name} - ₹${exp.amount} (${exp.category})</span>
+                    <button class="delete-btn" onclick="deleteExpense(${index})">X</button>
+                `;
+                expenseList.appendChild(div);
+            });
+            updateBudgetLeft();
+        }
+
+        function deleteExpense(index) {
+            expenses.splice(index, 1);
+            localStorage.setItem('expenses', JSON.stringify(expenses));
+            renderExpenses();
+            updateBudgetLeft();
+            renderChart();
+        }
+
+        function updateBudgetLeft() {
+    let totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    let budgetLeft = monthlyIncome - totalExpenses;
+    
+    document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toFixed(2);
+    document.getElementById('budgetLeftDisplay').textContent = budgetLeft.toFixed(2);
+    
+    let budgetLeftDisplay = document.getElementById('budgetLeftDisplay');
+    if (budgetLeft < 0) {
+        budgetLeftDisplay.style.color = "#ff4d4d"; // Red if overspent
+    } else if (budgetLeft < monthlyIncome * 0.2) {
+        budgetLeftDisplay.style.color = "#ffcc00"; // Yellow if running low
+    } else {
+        budgetLeftDisplay.style.color = "#00ff88"; // Green if safe
+    }
+}
+
+
+        function renderChart() {
+            let ctx = document.getElementById('circleGraph').getContext('2d');
+            let categories = {};
+            expenses.forEach(exp => categories[exp.category] = (categories[exp.category] || 0) + exp.amount);
+            let labels = Object.keys(categories);
+            let data = Object.values(categories);
+            
+            if (myPieChart) {
+                myPieChart.destroy();
+            }
+
+            myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                }
+            });
+        }
+
+        renderExpenses();
+        renderChart();
+    </script>
+</body>
+</html>

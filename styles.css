@@ -1,0 +1,113 @@
+/* styles.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #1E3C72, #2A5298);
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    width: 400px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.input-box {
+    position: relative;
+    margin: 20px 0;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+    padding-left: 15px;
+}
+
+.input-box label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    transition: 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.input-box input:focus + label,
+.input-box input:valid + label {
+    top: 10px;
+    font-size: 12px;
+    color: #4ca1af;
+}
+
+.input-box input:focus {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #4ca1af;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #376D85;
+}
+
+.background-anim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 10%, transparent 60%);
+    animation: moveBackground 10s infinite alternate;
+}
+
+@keyframes moveBackground {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}

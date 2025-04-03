@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to right, #283838, #2D5545);
+    color: #333;
+    min-height: 100vh;
+}
+
+.expense-tracker {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.logo i {
+    font-size: 30px;
+}
+
+.dashboard-overview {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.greeting {
+    color: #777;
+    font-size: 16px;
+}
+
+h1 {
+    margin: 5px 0 10px;
+    color: #1D5349;
+    font-size: 28px;
+}
+
+.date-info {
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.financial-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.financial-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.remaining-money {
+    background-color: #e8f5e9;
+}
+
+.money-spent {
+    background-color: #fee8e7;
+}
+
+.card-icon {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon i {
+    font-size: 22px;
+    color: #1D5349;
+}
+
+.card-content h3 {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.card-content p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1D5349;
+}
+
+.performance-section {
+    grid-column: 1 / -1;
+}
+
+.performance-indicator {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.performance-indicator strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.performance-bar {
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    display: flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.performance-segment {
+    height: 100%;
+}
+
+.good {
+    background-color: #4CAF50;
+    width: 60%;
+}
+
+.average {
+    background-color: #FFC107;
+    width: 25%;
+}
+
+.bad {
+    background-color: #F44336;
+    width: 15%;
+}
+
+.performance-indicator p {
+    font-size: 14px;
+    color: #777;
+}
+
+.proceed-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: #1D5349;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.proceed-btn:hover {
+    background-color: #3F6C50;
+    transform: translateY(-2px);
+}
+
+.proceed-btn span {
+    margin-left: 10px;
+}
+
+.mascot {
+    position: absolute;
+    bottom: 0;
+    right: 30px;
+    width: 220px;
+    height: 220px;
+}
+
+.mascot-img {
+    position: relative;
+    height: 100%;
+}
+
+.mascot-img img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .financial-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .mascot {
+        display: none;
+    }
+}
